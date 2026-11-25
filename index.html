@@ -56,9 +56,11 @@ em{color:var(--hp);font-style:normal;font-weight:700;text-align:center}
 <section id="train">
 <div id="st">
 <p class="mut">英語をタイプしてモンスターを倒そう。10体倒すとボスが出現（全100階層。難易度ごとに第1階層から進み、踏破済みの階層とその次の階層だけ選べます。モンスターは階層ごとに固定で、ボスはその王）。ボスを倒すとチェックポイントで戦利品を持ち帰り、HPが全回復して最大HPも増えます。HPが0になると、チェックポイント前の戦利品は失われます。</p>
+<div class="seg" id="pm"></div>
 <div class="seg" id="md"></div>
 <div style="margin:8px 0"><div class="row"><button data-a="fm" aria-label="前の階層">◀</button><b id="fn"></b><button data-a="fx" aria-label="次の階層">▶</button></div><input type="range" id="fsl" aria-label="階層" min="1" max="1" value="1" style="width:100%"></div>
 <div class="tb" id="dt" style="text-align:left;margin:8px 0"></div>
+<div id="pi" class="mut" style="margin:6px 0;font-size:.9rem"></div>
 <button class="on" data-a="go" style="font-size:1.2rem;width:100%;padding:.8rem">🚀 出発！</button>
 <div class="tb" id="rv" style="text-align:left;margin-top:14px"></div>
 </div>
@@ -153,7 +155,7 @@ let S=null;try{S=JSON.parse(localStorage.getItem("typeQuest1"))}catch(e){}
 const dx=()=>S.dx||(S.dx={m:{},b:{},g:{}});
 const mk=(s,r,v=Math.random()*SL[s].nv|0)=>{dx().g[s+r+"_"+v]=1;return{id:S.id++,s,r,v,lv:0}};
 if(!S||!S.inv){S={gold:0,inv:[],eq:{},id:1,clear:0};const a=mk("weapon",0,0),b=mk("armor",0,0);S.inv.push(a,b);S.eq.weapon=a.id;S.eq.armor=b.id}
-S.pot=S.pot||[3,0,0];S.nm=S.nm||0;S.rv=S.rv||0;S.cl=S.cl||[S.clear||0,0,0,0];Object.keys(dx().g).forEach(k=>{if(!k.includes("_")){dx().g[k+"_0"]=1;delete dx().g[k]}});S.inv.forEach(it=>dx().g[it.s+it.r+"_"+(it.v||0)]=1);
+S.pot=S.pot||[3,0,0];S.nm=S.nm||0;S.rv=S.rv||0;S.eb=S.eb||[0,0,0,0];S.cl=S.cl||[S.clear||0,0,0,0];Object.keys(dx().g).forEach(k=>{if(!k.includes("_")){dx().g[k+"_0"]=1;delete dx().g[k]}});S.inv.forEach(it=>dx().g[it.s+it.r+"_"+(it.v||0)]=1);
 const save=()=>{try{localStorage.setItem("typeQuest1",JSON.stringify(S))}catch(e){}};
 const stat=it=>{const f=R[it.r].m*(1+.35*it.lv);return SL[it.s].V[it.v||0].b.map(v=>Math.round(v*f))};
 const tot=()=>{let a=5,d=0,h=100+20*Math.max(...S.cl);for(const k of SK){const it=S.inv.find(x=>x.id===S.eq[k]);if(it){const s=stat(it);a+=s[0];d+=s[1];h+=s[2]}}return{atk:Math.round(a*RM()),def:d,hp:Math.round(h*RM())}};
@@ -176,7 +178,7 @@ function typer(root,pick,done,miss,chr){
   return{next,focus:()=>inp.focus()}
 }
 
-let RUN=0,tm=0,MODE=0,SEL=[0,0,0,0];const FLR=m=>{const x=Math.min(S.cl[m]+1,100);return SEL[m]&&SEL[m]<=x?SEL[m]:x};
+let RUN=0,tm=0,MODE=0,SEL=[0,0,0,0],PM=0;const FMX=m=>PM==1?S.cl[m]:Math.min(S.cl[m]+1,100),FLR=m=>{const x=FMX(m);return Math.max(1,SEL[m]&&SEL[m]<=x?SEL[m]:x)};
 const show=i=>["st","rn","cp"].forEach(x=>$("#"+x).hidden=x!=i);
 const log=t=>{const l=$("#lg");l.insertAdjacentHTML("afterbegin","<div>"+t+"</div>");while(l.children.length>6)l.lastChild.remove()};
 const pick=()=>{const r=RUN,mo=r&&r.mon,x=Math.random(),b=mo&&mo.boss,m=r?r.mode:0;
@@ -186,17 +188,20 @@ const pick=()=>{const r=RUN,mo=r&&r.mon,x=Math.random(),b=mo&&mo.boss,m=r?r.mode
   return rnd(W[m+(b?1:0)])};
 const tr=typer($("#t1"),pick,done,()=>{combo=0;cb()},n=>{combo+=n;cb()});
 
-function rst(){rrv();const m=MD[MODE],mx=Math.min(S.cl[MODE]+1,100),f=FLR(MODE);
+function rst(){rrv();const m=MD[MODE],mx=FMX(MODE),f=FLR(MODE);
   $("#md").innerHTML=MD.map((x,i)=>`<button data-m="${i}" class="${i==MODE?"on":""}" ${i==3&&!S.nm?"disabled":""}>${i==3&&!S.nm?"🔒 ":""}${x.n}</button>`).join("");
-  $("#fsl").max=mx;$("#fsl").value=f;$("#fn").textContent=`第${f}階層 ${FL[f-1][0]} ${FL[f-1][1]}`;$("#dt").innerHTML=`<b>踏破</b>：${S.cl[MODE]} / 100 階層（未踏破の階層には進めません）<br><b>出題</b>：${m.d}<br><b>ドロップ率</b>：`+m.t.map((v,i)=>v?["コモン","レア","ミシック","ゴッド","ドロップなし"][i]+" "+v+"%":"").filter(Boolean).join(" ／ ")+`<br><b>回復薬</b>：${PT.map((p,i)=>p[0]+"×"+S.pot[i]).join(" ")}`+(S.nm?"":"<br><small>🌑 ときどき現れる「様子のおかしいモンスター」を倒すとナイトメアが解放され、様子が変な武器が手に入ります</small>")+(S.nm?"<br><small>🌑 「様子のおかしいモンスター」を倒すと様子が変な武器が手に入ります</small>":"")}
-function go(){RUN={mode:MODE,fl:FLR(MODE),n:0,seg:0,bag:[],hp:tot().hp,g:0,st:"fight",mon:0};combo=0;cb();$("#lg").innerHTML="";show("rn");clearInterval(tm);tm=setInterval(tick,50);spawn();tr.focus()}
-function spawn(){const r=RUN,m=MD[r.mode],boss=r.n>=10,f=r.fl,D=f-1;let mo;
+  $("#pm").innerHTML=["通常","👑 ボスラッシュ","🔁 エンドレス"].map((x,i)=>`<button data-p="${i}" class="${i==PM?"on":""}">${x}</button>`).join("");
+  $("#fsl").max=Math.max(1,mx);$("#fsl").value=f;$("#fsl").disabled=PM==2||(PM==1&&mx<1);$("[data-a=go]").disabled=PM==1&&mx<1;
+  $("#fn").textContent=PM==2?"🔁 第1階層から無限に挑戦":PM==1?(mx<1?"🔒 踏破済みの階層がありません":`最終ボス：第${f}階層 ${FL[f-1][0]} ${FL[f-1][1]}の王`):`第${f}階層 ${FL[f-1][0]} ${FL[f-1][1]}`;
+  $("#pi").textContent=PM==1?`直近${Math.min(10,f)}階層分（第${Math.max(1,f-9)}〜${f}階層）のボスと連続で戦います。ボスの合間にHPが25%回復。全員倒すと戦利品を持ち帰れて、達成ボーナスでドロップ+2個。倒れると戦利品は失われます。階層の進行には影響しません。`:PM==2?`倒れるまで敵が出続け、ウェーブが進むほど強くなります（10ウェーブごとにボス）。ボスを倒すとチェックポイントで戦利品を確保しHPが30%回復。最高記録：ウェーブ ${S.eb[MODE]||0}`:"";$("#dt").innerHTML=`<b>踏破</b>：${S.cl[MODE]} / 100 階層（未踏破の階層には進めません）<br><b>出題</b>：${m.d}<br><b>ドロップ率</b>：`+m.t.map((v,i)=>v?["コモン","レア","ミシック","ゴッド","ドロップなし"][i]+" "+v+"%":"").filter(Boolean).join(" ／ ")+`<br><b>回復薬</b>：${PT.map((p,i)=>p[0]+"×"+S.pot[i]).join(" ")}`+(S.nm?"":"<br><small>🌑 ときどき現れる「様子のおかしいモンスター」を倒すとナイトメアが解放され、様子が変な武器が手に入ります</small>")+(S.nm?"<br><small>🌑 「様子のおかしいモンスター」を倒すと様子が変な武器が手に入ります</small>":"")}
+function go(){if(PM==1&&S.cl[MODE]<1)return;RUN={mode:MODE,pm:PM,w:1,fe:FLR(MODE),f0:PM==1?Math.max(1,FLR(MODE)-9):0,fl:PM==1?Math.max(1,FLR(MODE)-9):PM==2?1:FLR(MODE),n:PM==1?10:0,seg:0,bag:[],hp:tot().hp,g:0,st:"fight",mon:0};combo=0;cb();$("#lg").innerHTML="";show("rn");clearInterval(tm);tm=setInterval(tick,50);spawn();tr.focus()}
+function spawn(){const r=RUN,m=MD[r.mode],boss=r.pm==2?r.w%10==0:r.n>=10,f=r.pm==2?(r.w-1>>1)+1:r.fl,D=f-1;let mo;
   if(!boss&&Math.random()<(S.nm?.04:.07)){mo={odd:1,e:rnd(["🫥","🙃","👽","🥴"]),nm:"？？？",hits:3,mh:3,t:0,lim:18000};log("⚠️ 様子のおかしい何かが現れた！消える前に倒せ！")}
-  else{const q=FL[D],h=Math.round(40*1.06**D*m.h*(boss?8:1)*(.85+Math.random()*.3));
-    mo={e:q[0],nm:boss&&f<100?q[1]+"の王":q[1],hp:h,mx:h,atk:Math.round(4*1.07**D*m.a*(boss?1.8:1)),iv:boss?m.iv*.85:m.iv,boss};if(boss)log("👑 ボス出現！")}
-  r.mon=mo;r.g=0;r.st="fight";
+  else{const q=FL[D%100],h=Math.round(40*1.06**D*m.h*(boss?8:1)*(.85+Math.random()*.3));
+    mo={e:q[0],nm:boss&&D%100<99?q[1]+"の王":q[1],hp:h,mx:h,atk:Math.round(4*1.07**D*m.a*(boss?1.8:1)),iv:boss?m.iv*.85:m.iv,boss};if(boss)log("👑 ボス出現！")}
+  r.mon=mo;r.fl=f;r.g=0;r.st="fight";
   $("#bo").textContent=mo.e;$("#bo").className="bo"+(mo.odd?" odd":"")+(mo.boss?" bz":"");$("#bn").textContent=(mo.boss?"👑 BOSS ":"")+mo.nm;
-  $("#pg").textContent=boss?`第${f}階層 ・ ボス戦！`:`第${f}階層 ・ モンスター ${r.n+1}/10`;
+  $("#pg").textContent=r.pm==2?`ウェーブ ${r.w}${boss?" ・ ボス戦！":""} ／ 強さLv${f}`:r.pm==1?`ボスラッシュ ${f-r.f0+1}/${r.fe-r.f0+1} ・ 第${f}階層のボス`:boss?`第${f}階層 ・ ボス戦！`:`第${f}階層 ・ モンスター ${r.n+1}/10`;
   $("#gl").textContent=mo.odd?"消えるまで":"攻撃まで";$("#bg").style.width="0%";tr.next();bar()}
 function bar(){const r=RUN,mo=r.mon,t=tot();r.hp=Math.min(r.hp,t.hp);
   $("#bh").style.width=(mo.odd?mo.hits/mo.mh:Math.max(0,mo.hp/mo.mx))*100+"%";
@@ -212,15 +217,22 @@ function tick(){const r=RUN;if(!r||r.st!="fight"||$("#train").hidden)return;cons
 function done(w){const r=RUN;if(!r||r.st!="fight")return;const mo=r.mon;
   if(mo.odd){mo.hits--;log("✨ 効いている…！");an("#bo","hit");bar();if(mo.hits<=0)oddWin();return}
   const d=Math.round(tot().atk*(1+w.length/10)*(1+Math.min(combo,100)*.005));mo.hp-=d;log("⚔️ "+d.toLocaleString()+" ダメージ！");an("#bo","hit");bar();if(mo.hp<=0)kill()}
-function kill(){const r=RUN,mo=r.mon,m=MD[r.mode],g=Math.round(8*1.07**(r.fl-1)*m.g*(mo.boss?6:1));const dm=dx()[mo.boss?"b":"m"];dm[r.fl-1]=(dm[r.fl-1]||0)+1;S.gold+=g;let t="💰 +"+g.toLocaleString()+"G";
+function kill(){const r=RUN,mo=r.mon,m=MD[r.mode],g=Math.round(8*1.07**(r.fl-1)*m.g*(mo.boss?6:1));const dm=dx()[mo.boss?"b":"m"],ix=(r.fl-1)%100;dm[ix]=(dm[ix]||0)+1;S.gold+=g;let t="💰 +"+g.toLocaleString()+"G";
   for(let j=0;j<(mo.boss?2:1);j++){let k=roll(m.t);if(k==4&&mo.boss)k=0;if(k<4){const it=mk(rnd(SK),k);r.bag.push(it);t+=` ／ ${SL[it.s].i}${nm(it)}（${R[k].n}）`}}
   if(!mo.boss&&Math.random()<.12){S.pot[0]++;t+=" ／ 🧪"}
-  log("💥 "+mo.nm+"を倒した！ "+t);save();hd();if(mo.boss)return cp();r.n++;spawn()}
+  log("💥 "+mo.nm+"を倒した！ "+t);save();hd();if(r.pm==1){if(r.fl<r.fe){r.fl++;r.hp=Math.min(tot().hp,r.hp+Math.ceil(tot().hp*.25));log("💚 HPが少し回復した");return spawn()}return rushEnd()}
+  if(r.pm==2){r.w++;if(mo.boss)return ecp();return spawn()}
+  if(mo.boss)return cp();r.n++;spawn()}
 function oddWin(){const r=RUN,fs=!S.nm;S.nm=1;dx().odd=(dx().odd||0)+1;const W_=SL.weapon,it=mk("weapon",roll(MD[3].t),W_.nv+(Math.random()*(W_.V.length-W_.nv)|0));r.bag.push(it);log(`🌑 謎の影を倒した！${fs?"ナイトメアモード解放！":"様子が変な武器を落とした！"} ／ ${SL[it.s].i}${nm(it)}（${R[it.r].n}）`);save();rst();spawn()}
 function cp(){const r=RUN,L=r.bag;const fl=r.fl,m0=Math.max(...S.cl);if(fl>S.cl[r.mode]){S.cl[r.mode]=fl;SEL[r.mode]=0}const up=Math.max(...S.cl)>m0;S.inv.push(...L);r.bag=[];r.st="cp";r.hp=tot().hp;save();hd();
   $("#cp").innerHTML=`<h3>🚩 第${fl}階層クリア！</h3>${fl>=100?"<p>🏆 全100階層を制覇した！あなたは伝説の勇者だ！</p>":""}<p>戦利品を持ち帰った！ HP全回復${up?" ＆ 最大HP +20":""}</p>${L.length?L.map(it=>card(it)).join(""):"<p class='mut'>この区間のドロップ品はなかった。</p>"}<div class="seg" style="justify-content:center">${fl>=100?"":`<button class="on" data-a="next">第${fl+1}階層へ進む</button>`}<button data-a="home">帰還する</button></div>`;show("cp")}
-function lose(){const n=RUN.bag.length;clearInterval(tm);RUN=0;
-  $("#cp").innerHTML=`<h3>💀 力尽きた…</h3><p>チェックポイント前の戦利品 ${n} 個を失った。回復薬や強化で備えて再挑戦しよう！</p><button class="on" data-a="home">戻る</button>`;show("cp")}
+function ecp(){const r=RUN,L=r.bag,m=tot().hp;S.inv.push(...L);r.bag=[];r.st="cp";r.hp=Math.min(m,r.hp+Math.ceil(m*.3));S.eb[r.mode]=Math.max(S.eb[r.mode]||0,r.w-1);save();hd();
+  $("#cp").innerHTML=`<h3>🚩 ウェーブ${r.w-1}クリア！</h3><p>戦利品を持ち帰った！ HPが30%回復</p>${L.length?L.map(it=>card(it)).join(""):"<p class='mut'>この区間のドロップ品はなかった。</p>"}<div class="seg" style="justify-content:center"><button class="on" data-a="next">ウェーブ${r.w}へ進む</button><button data-a="home">帰還する</button></div>`;show("cp")}
+function rushEnd(){const r=RUN,L=r.bag,m=MD[r.mode];for(let j=0;j<2;j++){let k=roll(m.t);if(k==4)k=0;L.push(mk(rnd(SK),k))}
+  S.inv.push(...L);r.bag=[];r.st="cp";save();hd();
+  $("#cp").innerHTML=`<h3>🏆 ボスラッシュ達成！</h3><p>第${r.f0}〜${r.fe}階層のボスを全員撃破！ 戦利品を持ち帰った（達成ボーナス：ドロップ+2個）</p>${L.map(it=>card(it)).join("")}<div class="seg" style="justify-content:center"><button class="on" data-a="home">帰還する</button></div>`;show("cp")}
+function lose(){const n=RUN.bag.length,w=RUN.w-1,e=RUN.pm==2,md=RUN.mode;if(e)S.eb[md]=Math.max(S.eb[md]||0,w);save();clearInterval(tm);RUN=0;
+  $("#cp").innerHTML=`<h3>💀 力尽きた…</h3>${e?`<p>到達：ウェーブ ${w}（最高記録：${S.eb[md]}）</p>`:""}<p>チェックポイント前の戦利品 ${n} 個を失った。回復薬や強化で備えて再挑戦しよう！</p><button class="on" data-a="home">戻る</button>`;show("cp")}
 
 function card(it,btn){const s=stat(it),st=["ATK","DEF","HP"].map((k,i)=>s[i]?k+" "+s[i]:"").filter(Boolean).join(" ／ ");
   return `<div class="it r${it.r}"><div class="ic${od(it)?" odd":""}">${SL[it.s].i}</div><div class="in"><b>${nm(it)}</b> <span class="tg">${R[it.r].n}</span>${od(it)?" <span class='tg'>様子が変</span>":""}<br><small>${SL[it.s].l} Lv${it.lv} ・ ${st}</small></div>${btn||""}</div>`}
@@ -244,6 +256,7 @@ function rf(){hd();if(!$("#gear").hidden)rgear();if(!$("#shop").hidden)rshop()}
 document.onclick=e=>{
   const t=e.target.closest("[data-t]");if(t)return tab(t.dataset.t);
   const v=e.target.closest("[data-v]");if(v){DV=+v.dataset.v;return rdex()}
+  const p=e.target.closest("[data-p]");if(p){PM=+p.dataset.p;return rst()}
   const d=e.target.closest("[data-m]");if(d){MODE=+d.dataset.m;return rst()}
   const b=e.target.closest("[data-a]");if(!b)return;
   const a=b.dataset.a,id=+b.dataset.id,i=+b.dataset.i,it=S.inv.find(x=>x.id===id);
@@ -251,9 +264,9 @@ document.onclick=e=>{
   if(a=="rv0"){RC=0;return rrv()}
   if(a=="rv2"){if(S.gold>=rvCost()){S.gold=0;S.pot=[0,0,0];S.inv=[];S.eq={};S.cl=[0,0,0,0];SEL=[0,0,0,0];S.rv++}RC=0;save();hd();return rst()}
   if(a=="go")return go();
-  if(a=="fm"||a=="fx"){const mx=Math.min(S.cl[MODE]+1,100),f=FLR(MODE);SEL[MODE]=Math.max(1,Math.min(mx,f+(a=="fx"?1:-1)));return rst()}
+  if(a=="fm"||a=="fx"){const mx=Math.max(1,FMX(MODE)),f=FLR(MODE);SEL[MODE]=Math.max(1,Math.min(mx,f+(a=="fx"?1:-1)));return rst()}
   if(a=="next"){RUN.n=0;RUN.fl++;show("rn");spawn();return tr.focus()}
-  if(a=="home"){clearInterval(tm);RUN=0;rst();return show("st")}
+  if(a=="home"){if(RUN&&RUN.pm==2){S.eb[RUN.mode]=Math.max(S.eb[RUN.mode]||0,RUN.w-1);save()}clearInterval(tm);RUN=0;rst();return show("st")}
   if(a=="pot"){const r=RUN,t=tot();if(r&&S.pot[i]>0&&r.hp<t.hp){S.pot[i]--;const h=Math.min(t.hp-r.hp,Math.ceil(t.hp*PT[i][2]));r.hp+=h;log(`${PT[i][0]} HPが ${h} 回復した`);save();bar()}return tr.focus()}
   if(a=="eq")S.eq[it.s]=id;
   else if(a=="up"){const c=upCost(it);if(S.gold>=c&&it.lv<20){S.gold-=c;it.lv++}}
