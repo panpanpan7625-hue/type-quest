@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f3efe6" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#12141b" media="(prefers-color-scheme: dark)"><meta name="color-scheme" content="light dark"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="format-detection" content="telephone=no"><title>タイピング・クエスト</title>
+<style>
+:root{--bg:#f3efe6;--pn:#fff;--ink:#23252b;--mut:#6a6f7a;--ln:#d9d4c7;--ac:#d9480f;--hp:#2fb35a;--c0:#7d838e;--c1:#2f7cf6;--c2:#9333ea;--c3:#d99a00;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12141b;--pn:#1d212c;--ink:#eceef4;--mut:#99a0b1;--ln:#313748;--c0:#9aa1ad;--c1:#5b9bff;--c2:#b66cff;--c3:#ffc933}}
+:root[data-theme="dark"]{--bg:#12141b;--pn:#1d212c;--ink:#eceef4;--mut:#99a0b1;--ln:#313748;--c0:#9aa1ad;--c1:#5b9bff;--c2:#b66cff;--c3:#ffc933}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+[hidden]{display:none!important}
+body{margin:0;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;overscroll-behavior-y:none;background:var(--bg);color:var(--ink);font-family:"Hiragino Sans","Yu Gothic",Meiryo,system-ui,sans-serif;line-height:1.5}
+.wrap{max-width:760px;margin:auto;padding:12px}
+h1{font-size:1.4rem;margin:.2rem 0 .6rem}h3{margin:.8rem 0 .4rem}
+small,.mut{color:var(--mut)}
+button{touch-action:manipulation;font:inherit;padding:.45rem .8rem;border-radius:8px;border:1px solid var(--ln);background:var(--pn);color:var(--ink);cursor:pointer}
+button:disabled{opacity:.4;cursor:not-allowed}
+button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.hd,.seg{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.hd span{background:var(--pn);border:1px solid var(--ln);border-radius:20px;padding:2px 12px;font-weight:700}
+nav{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}
+.tb{background:var(--pn);border:2px solid var(--ln);border-radius:14px;padding:14px;text-align:center}
+.tb.err{border-color:var(--ac);animation:sh .15s}
+.w{font:700 clamp(1.8rem,8vw,2.6rem) ui-monospace,Menlo,Consolas,monospace;letter-spacing:.08em;min-height:1.4em;white-space:pre-wrap;word-break:break-word}
+.w.s{font-size:1.2rem;letter-spacing:0}
+.w span{color:var(--mut)}.w span.ok{color:var(--hp)}
+.m{font-size:1.1rem;margin:4px 0 10px}
+.tb input{-webkit-user-select:text;user-select:text;width:100%;box-sizing:border-box;font:600 1.1rem ui-monospace,Menlo,Consolas,monospace;padding:.6rem;border-radius:8px;border:2px solid var(--ln);background:var(--bg);color:var(--ink)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:2em}
+.cb{color:var(--ac);font-weight:700}
+.it,.bg,.dc{--rc:var(--c0)}
+.it{display:flex;gap:10px;align-items:center;border:2px solid var(--rc);border-radius:12px;background:var(--pn);padding:8px 10px;margin-bottom:8px}
+.r1{--rc:var(--c1)}.r2{--rc:var(--c2);box-shadow:0 0 10px var(--c2)}
+.r3{--rc:var(--c3);background:linear-gradient(120deg,var(--pn),rgba(255,201,51,.28),var(--pn));animation:glow 1.4s infinite alternate}
+.bg{display:inline-block;border:2px solid var(--rc);border-radius:6px;padding:0 3px;margin-left:3px}
+.ic{font-size:2rem}.in{flex:1;min-width:0}
+.tg{background:var(--rc);color:#fff;border-radius:6px;padding:0 7px;font-size:.78rem;font-weight:700}
+.bt{display:flex;flex-direction:column;gap:4px;font-size:.85rem}.bt button{padding:.3rem .6rem}
+em{color:var(--hp);font-style:normal;font-weight:700;text-align:center}
+.bo{font-size:5rem;text-align:center;line-height:1.2}.hit{animation:sh .25s}
+.bz{font-size:6.5rem;filter:drop-shadow(0 0 12px var(--c3))}.odd{animation:gl .25s infinite;filter:hue-rotate(150deg) saturate(3) contrast(1.4)}
+.bar{height:14px;background:var(--ln);border-radius:8px;overflow:hidden;margin:4px 0 8px}
+.bar.sm{height:8px}.bar i{display:block;height:100%;width:100%;background:var(--hp);transition:width .15s}
+#ph{background:var(--c1)}#bh{background:var(--ac)}#bg{background:var(--c3);transition:none;width:0}
+.lg{font-size:.85rem;color:var(--mut);margin:8px 0;min-height:6.5em}
+#cp{text-align:center;padding:8px}
+.dg{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:6px;margin-bottom:6px}.dc{background-color:var(--pn);border:2px solid var(--rc);border-radius:10px;padding:6px 4px;text-align:center;font-size:.72rem;line-height:1.3}.dc .e{font-size:2rem}.dc.no{opacity:.5}.dc.no .e{filter:brightness(0) opacity(.4)}
+.ft{margin:18px 0 8px;font-size:.8rem;color:var(--mut)}.ft summary{cursor:pointer}.ft p{margin:.4rem 0}
+@keyframes sh{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes gl{25%{transform:translate(-4px,2px) skew(8deg)}50%{transform:translate(3px,-3px) scale(1.05,.95)}75%{transform:translate(-2px,-1px) skew(-8deg)}}
+@keyframes glow{to{box-shadow:0 0 18px var(--c3)}}
+</style></head><body><div class="wrap">
+<h1>⌨️ タイピング・クエスト</h1>
+<div id="hd" class="hd"></div>
+<nav><button data-t="train">⌨️ 修行</button><button data-t="gear">🗡️ 装備</button><button data-t="shop">🏪 店</button><button data-t="dex">📖 図鑑</button></nav>
+
+<section id="train">
+<div id="st">
+<p class="mut">英語をタイプしてモンスターを倒そう。10体倒すとボスが出現（全100階層。難易度ごとに第1階層から進み、踏破済みの階層とその次の階層だけ選べます。モンスターは階層ごとに固定で、ボスはその王）。ボスを倒すとチェックポイントで戦利品を持ち帰り、HPが全回復して最大HPも増えます。HPが0になると、チェックポイント前の戦利品は失われます。</p>
+<div class="seg" id="md"></div>
+<div style="margin:8px 0"><div class="row"><button data-a="fm" aria-label="前の階層">◀</button><b id="fn"></b><button data-a="fx" aria-label="次の階層">▶</button></div><input type="range" id="fsl" aria-label="階層" min="1" max="1" value="1" style="width:100%"></div>
+<div class="tb" id="dt" style="text-align:left;margin:8px 0"></div>
+<button class="on" data-a="go" style="font-size:1.2rem;width:100%;padding:.8rem">🚀 出発！</button>
+<div class="tb" id="rv" style="text-align:left;margin-top:14px"></div>
+</div>
+<div id="rn" hidden>
+<div class="row"><b id="pg"></b><small id="bag"></small></div>
+<div class="bo" id="bo"></div><div style="text-align:center"><b id="bn"></b></div>
+<div class="bar"><i id="bh"></i></div><div style="text-align:center"><small id="bht"></small></div>
+<small id="gl"></small><div class="bar sm"><i id="bg"></i></div>
+<div class="row"><span class="cb"></span><small>あなたのHP <span id="pht"></span></small></div>
+<div class="bar" id="pl"><i id="ph"></i></div>
+<div class="tb" id="t1"><div class="w"></div><div class="m"></div><input autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="ここに入力"></div>
+<div class="seg" id="pots"></div>
+<div class="lg" id="lg"></div>
+<button data-a="home">撤退（未確保の戦利品を失う）</button>
+</div>
+<div id="cp" hidden></div>
+</section>
+
+<section id="gear" hidden>
+<p class="mut">ゴールドで装備を強化（最大Lv20）。ATKは武器、DEF・HPは盾・兜・胴体・足・靴で上がります。</p>
+<div class="seg"><button data-a="sellc">コモンを一括売却</button></div>
+<div id="gl2"></div>
+</section>
+
+<section id="shop" hidden>
+<h3>🧪 回復薬</h3><div id="pl2"></div>
+<h3>🎁 宝箱</h3>
+<p class="mut">排出率：コモン 70% ／ レア 25% ／ ミシック 4.5% ／ ゴッド 0.5%　（倍率 ×1 ／ ×2.2 ／ ×5 ／ ×12）</p>
+<div class="seg"><button id="g1" class="on" data-a="pull" data-n="1"></button><button id="g10" class="on" data-a="pull" data-n="10"></button></div>
+<div id="gr"></div></section><section id="dex" hidden><div class="seg"><button data-v="0" class="on">👾 モンスター</button><button data-v="1">🗡️ 装備</button></div><p class="mut" id="dxs"></p><div id="dxl"></div>
+</section>
+<footer class="ft"><details><summary>ℹ️ このアプリについて</summary><p><b>タイピング・クエスト</b> v1.0.0</p><p>プライバシー：個人情報の収集・外部への送信は一切行いません。ゲームの進行データはこの端末の中だけに保存され、通信は行いません。</p><p>モンスターや装備の絵には、お使いの端末の絵文字を使っています。</p><button id="rs">セーブデータを削除する</button></details></footer></div>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)],rnd=a=>a[Math.random()*a.length|0];
+const R=[{n:"コモン",m:1,c:1},{n:"レア",m:2.2,c:2.5},{n:"ミシック",m:5,c:6},{n:"ゴッド",m:12,c:15}];
+const SL={
+weapon:{i:"🗡️",l:"武器",b:[10,0,0],n:["木の剣","鋼の剣","魔剣グラム","神剣エクスカリバー"]},
+shield:{i:"🛡️",l:"盾",b:[0,4,10],n:["木の盾","騎士の盾","竜鱗の盾","神盾イージス"]},
+helmet:{i:"⛑️",l:"兜",b:[0,2,20],n:["革の帽子","鉄の兜","ミスリルの兜","神冠ヘリオス"]},
+armor:{i:"🦺",l:"胴体",b:[0,3,40],n:["布の服","鋼の鎧","竜王の鎧","神鎧オリンポス"]},
+legs:{i:"👖",l:"足",b:[0,2,25],n:["布のズボン","鉄の脚甲","竜鱗の脚甲","神脚アトラス"]},
+boots:{i:"👢",l:"靴",b:[0,1,15],n:["革のブーツ","鋼のブーツ","疾風の靴","神靴ヘルメス"]}};
+const SK=Object.keys(SL);
+const X=(b,n)=>({b,n:n.split(",")});
+const VX={
+weapon:[X([13,0,0],"手斧,バトルアックス,破砕の魔斧,神斧ラグナロク"),X([9,1,10],"木の槍,鉄の槍,竜殺しの槍,神槍グングニル"),X([7,0,35],"木の杖,賢者の杖,星砕きの杖,神杖アスクレピオス"),X([11,0,5],"短弓,鋼の長弓,風神の弓,神弓アルテミス"),X([16,0,0],"鉄の大剣,クレイモア,竜断ちの大剣,神大剣ティルヴィング"),X([19,0,0],"石の大斧,破城斧,巨人殺しの大斧,神大斧ヴァルハラ"),X([8,1,15],"石のナイフ,鋼のダガー,影縫いの短剣,神短剣ダーインスレイヴ"),X([15,1,0],"鋸びた太刀,鋼の太刀,妖刀ムラマサ,神刀アメノムラクモ")],
+shield:[X([0,6,5],"鉄板の盾,大盾タワー,要塞の大盾,神壁アダマス"),X([2,3,5],"トゲの盾,スパイクシールド,竜牙の盾,神盾ゲイボルグ")],
+helmet:[X([0,4,10],"鍋の兜,重騎士の兜,黒鋼の兜,神兜アレス"),X([2,1,15],"角の兜,バイキングの兜,鬼角の兜,神冠ヴァルキリー")],
+armor:[X([0,6,20],"革の胸当て,重騎士の鎧,黒鋼の鎧,神鎧ヘパイストス"),X([3,2,20],"闘士の服,戦士の鎧,修羅の鎧,神鎧アキレウス")],
+legs:[X([0,4,12],"革のすね当て,重騎士の脚甲,黒鋼の脚甲,神脚タイタン"),X([2,1,15],"戦士のズボン,狼牙の脚甲,修羅の脚甲,神脚ヘラクレス")],
+boots:[X([0,2,8],"木靴,重騎士のブーツ,黒鋼のブーツ,神靴ペルセウス"),X([1,1,10],"とげ靴,狼牙のブーツ,修羅の靴,神靴イカロス")]};
+for(const k of SK)SL[k].V=[{b:SL[k].b,n:SL[k].n},...VX[k]];
+for(const k of SK)SL[k].nv=SL[k].V.length;
+const XO=(b,n)=>({...X(b,n),o:1});
+SL.weapon.V.push(XO([15,2,10],",ぐにゃぐにゃの剣,歪曲の魔剣,神剣ヌル"),XO([11,4,45],",目玉の杖,ぎょろ目の魔杖,神杖ヴォイド"),XO([20,0,5],",さかさの斧,裏返しの魔斧,神斧グリッチ"),XO([13,1,20],",弦のない弓,逆さ張りの魔弓,神弓ブランク"),XO([14,5,15],",ねじれた槍,メビウスの魔槍,神槍ウロボロス"),XO([26,0,0],",大きすぎる剣,はみ出す魔剣,神大剣オーバーフロー"),XO([9,8,30],",溶けかけの短剣,とろける魔刃,神短剣メルト"),XO([18,3,25],",笑うこん棒,泣き叫ぶ魔槌,神槌カオス"),XO([17,2,10],",抜けない太刀,鞘だけの魔刀,神刀ムゲン"));
+const P=s=>s.split(",").map(x=>x.split(":")),Q=s=>s.split("\n").map(x=>x.split("|"));
+const W=[P("cat:猫,dog:犬,sun:太陽,moon:月,tree:木,book:本,fish:魚,bird:鳥,rain:雨,wind:風,fire:火,water:水,star:星,milk:牛乳,rice:ご飯,desk:机,door:ドア,road:道,song:歌,blue:青い,red:赤い,apple:りんご,green:緑の,happy:幸せな,sweet:甘い,bread:パン,hand:手,face:顔,snow:雪,cloud:雲,river:川,sea:海,city:都市,king:王,girl:少女,boy:少年,home:家,food:食べ物,cake:ケーキ,ball:ボール,cold:寒い,hot:暑い,big:大きい,small:小さい,fast:速い,slow:遅い,nose:鼻,hair:髪,love:愛,play:遊ぶ,walk:歩く,jump:跳ぶ,sing:歌う,read:読む,write:書く,pen:ペン,box:箱,bag:かばん,cup:カップ,hat:帽子,egg:卵,bed:ベッド,car:車,bus:バス,map:地図,key:鍵,sky:空,sand:砂,rock:岩,leaf:葉,lake:湖,farm:農場,duck:アヒル,frog:カエル,bear:クマ,lion:ライオン,wolf:オオカミ,goat:ヤギ,sheep:羊,horse:馬,pig:豚,cow:牛,nest:巣,wing:翼,tail:しっぽ,eye:目,ear:耳,mouth:口,arm:腕,leg:脚,head:頭,tea:お茶,soup:スープ,meat:肉,salt:塩,sugar:砂糖,lemon:レモン,peach:桃,grape:ぶどう,pizza:ピザ,candy:あめ,sit:座る,run:走る,eat:食べる,drink:飲む,sleep:眠る,swim:泳ぐ,dance:踊る,laugh:笑う,cry:泣く,open:開ける,kind:親切な,new:新しい,old:古い,long:長い,short:短い,dark:暗い,warm:暖かい,cool:涼しい,soft:柔らかい,gold:金,ring:指輪,gift:贈り物,gate:門,wall:壁,roof:屋根,tent:テント,boat:ボート,ship:船,train:電車"),
+P("school:学校,friend:友達,window:窓,flower:花,mountain:山,morning:朝,kitchen:台所,summer:夏,winter:冬,family:家族,teacher:先生,music:音楽,travel:旅行,garden:庭,bridge:橋,market:市場,pencil:鉛筆,island:島,orange:オレンジ,yellow:黄色,monkey:猿,rabbit:うさぎ,doctor:医者,farmer:農家,picture:絵,number:数字,answer:答え,button:ボタン,jacket:上着,castle:城,forest:森,planet:惑星,silver:銀,golden:金色の,energy:エネルギー,machine:機械,bottle:瓶,breakfast:朝食,holiday:休日,library:図書館,station:駅,airport:空港,science:科学,history:歴史,weather:天気,problem:問題,brother:兄弟,sister:姉妹,mother:母,father:父,child:子供,people:人々,animal:動物,weekend:週末,evening:夕方,afternoon:午後,season:季節,spring:春,autumn:秋,birthday:誕生日,vacation:休暇,journey:旅,country:国,village:村,street:通り,building:建物,balcony:バルコニー,ceiling:天井,curtain:カーテン,blanket:毛布,pillow:枕,mirror:鏡,basket:かご,ticket:切符,camera:カメラ,guitar:ギター,violin:バイオリン,piano:ピアノ,singer:歌手,painter:画家,writer:作家,soldier:兵士,knight:騎士,dragon:ドラゴン,wizard:魔法使い,princess:王女,treasure:宝,thunder:雷,rainbow:虹,volcano:火山,desert:砂漠,ocean:大洋,jungle:ジャングル,harbor:港,tunnel:トンネル,engine:エンジン,rocket:ロケット,kitten:子猫,puppy:子犬,turtle:亀,dolphin:イルカ,penguin:ペンギン,giraffe:キリン,elephant:象,chicken:鶏,cookie:クッキー,chocolate:チョコレート,sandwich:サンドイッチ,noodle:麺,tomato:トマト,potato:じゃがいも,cabbage:キャベツ,banana:バナナ,strong:強い,quiet:静かな,simple:簡単な,famous:有名な,popular:人気の,special:特別な,careful:注意深い,clever:賢い,honest:正直な,gentle:優しい,listen:聞く,borrow:借りる,repeat:繰り返す,choose:選ぶ,decide:決める,explain:説明する,believe:信じる,forget:忘れる,wonder:不思議に思う,collect:集める,practice:練習する"),
+P("beautiful:美しい,adventure:冒険,important:重要な,dangerous:危険な,knowledge:知識,language:言語,remember:覚える,tomorrow:明日,yesterday:昨日,wonderful:素晴らしい,difficult:難しい,celebrate:祝う,hospital:病院,umbrella:傘,vegetable:野菜,restaurant:レストラン,discover:発見する,favorite:お気に入りの,direction:方向,tradition:伝統,challenge:挑戦,experience:経験,government:政府,environment:環境,technology:技術,imagination:想像力,education:教育,community:地域社会,information:情報,independent:独立した,opportunity:機会,tournament:大会,temperature:温度,communicate:伝える,responsible:責任のある,comfortable:快適な,necessary:必要な,successful:成功した,electricity:電気,achievement:達成,accomplish:成し遂げる,appreciate:感謝する,atmosphere:雰囲気,authority:権威,available:利用できる,boundary:境界,celebrity:有名人,character:性格,chemistry:化学,competition:競争,concentrate:集中する,confidence:自信,conversation:会話,curiosity:好奇心,democracy:民主主義,destination:目的地,development:発展,discussion:議論,disappear:消える,emergency:緊急事態,enormous:巨大な,equipment:設備,exception:例外,excellent:優れた,exhibition:展覧会,expression:表現,fantastic:空想的な,generation:世代,geography:地理,imaginary:想像上の,immediately:すぐに,incredible:信じられない,influence:影響,ingredient:材料,intelligent:知的な,interesting:興味深い,invitation:招待,laboratory:実験室,literature:文学,magnificent:壮大な,mysterious:神秘的な,neighborhood:近所,opposite:反対の,particular:特定の,performance:公演,philosophy:哲学,population:人口,possibility:可能性,preparation:準備,protection:保護,reputation:評判,revolution:革命,satisfaction:満足,scientific:科学的な,signature:署名,situation:状況,specialist:専門家,strategy:戦略,structure:構造,suggestion:提案,supermarket:スーパー,thoughtful:思いやりのある,transportation:輸送,university:大学,vocabulary:語彙,volunteer:ボランティア,wilderness:荒野,extraordinary:並外れた,unbelievable:信じられない")];
+const S1=Q(`I like cats.|私は猫が好きです。
+This is my book.|これは私の本です。
+She plays the piano.|彼女はピアノを弾きます。
+We eat lunch at noon.|私たちは正午に昼食を食べます。
+He runs every morning.|彼は毎朝走ります。
+It is a sunny day.|晴れた日です。
+Please open the door.|ドアを開けてください。
+My father drives a car.|父は車を運転します。
+The dog is under the table.|犬はテーブルの下にいます。
+I go to school by bus.|私はバスで学校に行きます。
+What time is it now?|今何時ですか。
+Thank you very much.|どうもありがとうございます。`);
+const S2=Q(`Learning a new language opens doors to cultures that you have never imagined before.|新しい言語を学ぶことは、想像もしなかった文化への扉を開く。
+Although the journey was long and exhausting, they finally reached the summit at sunrise.|旅は長く過酷だったが、彼らはついに日の出とともに山頂に到達した。
+If you practice every day, your typing speed will improve faster than you expect.|毎日練習すれば、タイピング速度は思ったより早く上達する。
+The ancient library contained thousands of manuscripts that nobody had read for centuries.|古代の図書館には、何世紀も誰も読んでいない何千もの写本があった。
+Scientists around the world are working together to solve the most difficult problems of our time.|世界中の科学者が協力して、現代の最も難しい問題に取り組んでいる。
+Despite the heavy rain, the festival continued and the crowd cheered louder than ever.|大雨にもかかわらず祭りは続き、観衆はかつてないほど大きく歓声を上げた。
+The dragon slept beneath the mountain, guarding a treasure that no hero could carry away.|竜は山の下で眠り、どんな英雄も持ち去れない宝を守っていた。
+Whenever I feel discouraged, I remember how far I have come since the very beginning.|落ち込んだときは、最初からどれほど進歩したかを思い出す。`);
+const MD=[
+{n:"イージー",d:"やさしい単語",h:.8,a:.8,g:1,iv:5500,t:[30,5,0,0,65]},
+{n:"ふつう",d:"ふつうの単語",h:1,a:1,g:1.3,iv:4500,t:[50,10,5,0,35]},
+{n:"ハード",d:"難しい単語＋ときどき簡単な英文",h:1.3,a:1.4,g:1.8,iv:4500,t:[40,40,17.5,2.5,0]},
+{n:"ナイトメア",d:"本格的な英文",h:1.8,a:1.6,g:3,iv:5000,t:[0,80,15,5,0]}];
+const M=[["👾","ゲームスライム"],["🐺","ウルフ"],["🦇","バット"],["🕷️","大蜘蛛"],["🐍","バイパー"],["🦂","スコーピオン"],["👻","ゴースト"],["🧟","ゾンビ"],["🦖","ティラノ"],["🐙","オクトパス"]];
+const BS=[["🐲","ドラゴンロード"],["👹","鬼王"],["🧛","ヴァンパイア公"],["🦑","クラーケン"],["🐉","古龍"],["😈","魔王"],["👁️","邪神"],["💀","死神"]];
+const FL=P("🐭:ネズミ,🐸:カエル,🐛:イモムシ,🐌:カタツムリ,🐜:アリ,🐝:ハチ,🐞:テントウ虫,🦗:コオロギ,🐔:ニワトリ,🐰:ウサギ,🦊:キツネ,🐺:ウルフ,🐗:イノシシ,🦌:シカ,🐻:ベア,🐆:ヒョウ,🦍:ゴリラ,🐍:バイパー,🦂:スコーピオン,🦇:バット,🐊:ワニ,🐢:カメ,🦎:トカゲ,🦈:シャーク,🐙:オクトパス,🦑:イカ,🦀:カニ,🦞:ロブスター,🐬:イルカ,🐳:クジラ,🦅:イーグル,🦉:オウル,🐧:ペンギン,🦜:オウム,🦢:スワン,🐘:エレファント,🦏:サイ,🦛:カバ,🐪:ラクダ,🦒:キリン,🐅:タイガー,🦁:ライオン,🐎:ホース,🐃:バッファロー,🐂:ミノタウロス,🦄:ユニコーン,🐲:ドラゴン,🦖:ティラノ,🦕:ブラキオ,🐉:古龍,👾:ゲームスライム,🤖:ロボット,👻:ゴースト,💀:スケルトン,🧟:ゾンビ,🧛:ヴァンパイア,🧙:魔導士,🧚:妖精,🧞:ジーニー,🧜:マーメイド,👹:鬼,👺:天狗,🤡:ピエロ,👽:エイリアン,🎃:パンプキン,🗿:モアイ,🦠:ウイルス,🍄:キノコ,🌵:サボテン,🌋:火山,🔥:ほのお,⚡:いかずち,🧊:氷塊,🌊:大波,🌑:暗黒月,🌞:太陽,🌝:満月,💎:宝石魔,🔱:海神の槍,🛸:UFO,🦾:機械腕,🧠:ブレイン,🧿:邪眼,🦴:ボーン,🌀:渦,🌈:虹,🧬:遺伝子魔,💫:流星,⭐:星魔,🌟:輝星,😈:悪魔,👿:大悪魔,🔮:水晶魔,🎭:仮面,👑:亡霊,🏰:動く城,🌌:銀河,🌠:星降り,🌍:大地神,👼:創世神");
+const PT=[["🧪","ポーション",.3,40],["⚗️","ハイポーション",.6,120],["💖","エリクサー",1,300]];
+const GT=[70,25,4.5,.5,0];
+
+let S=null;try{S=JSON.parse(localStorage.getItem("typeQuest1"))}catch(e){}
+const dx=()=>S.dx||(S.dx={m:{},b:{},g:{}});
+const mk=(s,r,v=Math.random()*SL[s].nv|0)=>{dx().g[s+r+"_"+v]=1;return{id:S.id++,s,r,v,lv:0}};
+if(!S||!S.inv){S={gold:0,inv:[],eq:{},id:1,clear:0};const a=mk("weapon",0,0),b=mk("armor",0,0);S.inv.push(a,b);S.eq.weapon=a.id;S.eq.armor=b.id}
+S.pot=S.pot||[3,0,0];S.nm=S.nm||0;S.rv=S.rv||0;S.cl=S.cl||[S.clear||0,0,0,0];Object.keys(dx().g).forEach(k=>{if(!k.includes("_")){dx().g[k+"_0"]=1;delete dx().g[k]}});S.inv.forEach(it=>dx().g[it.s+it.r+"_"+(it.v||0)]=1);
+const save=()=>{try{localStorage.setItem("typeQuest1",JSON.stringify(S))}catch(e){}};
+const stat=it=>{const f=R[it.r].m*(1+.35*it.lv);return SL[it.s].V[it.v||0].b.map(v=>Math.round(v*f))};
+const tot=()=>{let a=5,d=0,h=100+20*Math.max(...S.cl);for(const k of SK){const it=S.inv.find(x=>x.id===S.eq[k]);if(it){const s=stat(it);a+=s[0];d+=s[1];h+=s[2]}}return{atk:Math.round(a*RM()),def:d,hp:Math.round(h*RM())}};
+const upCost=it=>Math.round(30*R[it.r].c*1.4**it.lv),sellV=it=>Math.round(25*R[it.r].c*(1+it.lv));
+const gCost=()=>Math.round(200*1.07**Math.max(...S.cl)),pc=i=>Math.round(PT[i][3]*1.04**Math.max(...S.cl));
+function roll(w){let x=Math.random()*w.reduce((a,c)=>a+c),r=0;while(r<w.length-1&&(x-=w[r])>=0)r++;return r}
+const an=(s,c)=>{const e=$(s);e.classList.remove(c);void e.offsetWidth;e.classList.add(c)};
+const hd=()=>{const t=tot();$("#hd").innerHTML=`<span>💰 ${S.gold.toLocaleString()}G</span><span>⚔️ ${t.atk.toLocaleString()}</span><span>🛡️ ${t.def}</span><span>❤️ ${t.hp}</span>${S.rv?`<span>🔄 ×${+RM().toFixed(2)}</span>`:""}`};
+const nm=it=>SL[it.s].V[it.v||0].n[it.r],od=it=>(it.v||0)>=SL[it.s].nv;
+let combo=0;const cb=()=>$$(".cb").forEach(e=>e.textContent=combo>1?combo+" COMBO!":"");
+
+function typer(root,pick,done,miss,chr){
+  let w,pl=0,inp=root.querySelector("input"),dp=root.querySelector(".w");
+  const draw=v=>{dp.className="w"+(w.length>18?" s":"");dp.innerHTML=[...w].map((c,i)=>`<span class="${i<v.length?"ok":""}">${c}</span>`).join("")};
+  const next=()=>{const p=pick();w=p[0];root.querySelector(".m").textContent=p[1];inp.value="";pl=0;draw("")};
+  inp.oninput=()=>{const v=inp.value;let k=0;while(k<v.length&&v[k].toLowerCase()===(w[k]||"").toLowerCase())k++;
+    if(k<v.length){root.classList.add("err");setTimeout(()=>root.classList.remove("err"),150);miss()}
+    const s=v.slice(0,k);inp.value=s;draw(s);if(k>pl)chr(k-pl);pl=k;if(s.length==w.length){done(w);next()}};
+  root.onclick=()=>inp.focus();
+  return{next,focus:()=>inp.focus()}
+}
+
+let RUN=0,tm=0,MODE=0,SEL=[0,0,0,0];const FLR=m=>{const x=Math.min(S.cl[m]+1,100);return SEL[m]&&SEL[m]<=x?SEL[m]:x};
+const show=i=>["st","rn","cp"].forEach(x=>$("#"+x).hidden=x!=i);
+const log=t=>{const l=$("#lg");l.insertAdjacentHTML("afterbegin","<div>"+t+"</div>");while(l.children.length>6)l.lastChild.remove()};
+const pick=()=>{const r=RUN,mo=r&&r.mon,x=Math.random(),b=mo&&mo.boss,m=r?r.mode:0;
+  if(mo&&mo.odd)return rnd(W[2]);
+  if(m==3)return x<.85?rnd(S2):rnd(W[2]);
+  if(m==2)return x<(b?.5:.2)?rnd(S1):rnd(W[2]);
+  return rnd(W[m+(b?1:0)])};
+const tr=typer($("#t1"),pick,done,()=>{combo=0;cb()},n=>{combo+=n;cb()});
+
+function rst(){rrv();const m=MD[MODE],mx=Math.min(S.cl[MODE]+1,100),f=FLR(MODE);
+  $("#md").innerHTML=MD.map((x,i)=>`<button data-m="${i}" class="${i==MODE?"on":""}" ${i==3&&!S.nm?"disabled":""}>${i==3&&!S.nm?"🔒 ":""}${x.n}</button>`).join("");
+  $("#fsl").max=mx;$("#fsl").value=f;$("#fn").textContent=`第${f}階層 ${FL[f-1][0]} ${FL[f-1][1]}`;$("#dt").innerHTML=`<b>踏破</b>：${S.cl[MODE]} / 100 階層（未踏破の階層には進めません）<br><b>出題</b>：${m.d}<br><b>ドロップ率</b>：`+m.t.map((v,i)=>v?["コモン","レア","ミシック","ゴッド","ドロップなし"][i]+" "+v+"%":"").filter(Boolean).join(" ／ ")+`<br><b>回復薬</b>：${PT.map((p,i)=>p[0]+"×"+S.pot[i]).join(" ")}`+(S.nm?"":"<br><small>🌑 ときどき現れる「様子のおかしいモンスター」を倒すとナイトメアが解放され、様子が変な武器が手に入ります</small>")+(S.nm?"<br><small>🌑 「様子のおかしいモンスター」を倒すと様子が変な武器が手に入ります</small>":"")}
+function go(){RUN={mode:MODE,fl:FLR(MODE),n:0,seg:0,bag:[],hp:tot().hp,g:0,st:"fight",mon:0};combo=0;cb();$("#lg").innerHTML="";show("rn");clearInterval(tm);tm=setInterval(tick,50);spawn();tr.focus()}
+function spawn(){const r=RUN,m=MD[r.mode],boss=r.n>=10,f=r.fl,D=f-1;let mo;
+  if(!boss&&Math.random()<(S.nm?.04:.07)){mo={odd:1,e:rnd(["🫥","🙃","👽","🥴"]),nm:"？？？",hits:3,mh:3,t:0,lim:18000};log("⚠️ 様子のおかしい何かが現れた！消える前に倒せ！")}
+  else{const q=FL[D],h=Math.round(40*1.06**D*m.h*(boss?8:1)*(.85+Math.random()*.3));
+    mo={e:q[0],nm:boss&&f<100?q[1]+"の王":q[1],hp:h,mx:h,atk:Math.round(4*1.07**D*m.a*(boss?1.8:1)),iv:boss?m.iv*.85:m.iv,boss};if(boss)log("👑 ボス出現！")}
+  r.mon=mo;r.g=0;r.st="fight";
+  $("#bo").textContent=mo.e;$("#bo").className="bo"+(mo.odd?" odd":"")+(mo.boss?" bz":"");$("#bn").textContent=(mo.boss?"👑 BOSS ":"")+mo.nm;
+  $("#pg").textContent=boss?`第${f}階層 ・ ボス戦！`:`第${f}階層 ・ モンスター ${r.n+1}/10`;
+  $("#gl").textContent=mo.odd?"消えるまで":"攻撃まで";$("#bg").style.width="0%";tr.next();bar()}
+function bar(){const r=RUN,mo=r.mon,t=tot();r.hp=Math.min(r.hp,t.hp);
+  $("#bh").style.width=(mo.odd?mo.hits/mo.mh:Math.max(0,mo.hp/mo.mx))*100+"%";
+  $("#bht").textContent=mo.odd?"残り "+mo.hits+" 回":Math.max(0,mo.hp).toLocaleString()+" / "+mo.mx.toLocaleString();
+  $("#ph").style.width=Math.max(0,r.hp/t.hp*100)+"%";$("#pht").textContent=Math.max(0,r.hp)+" / "+t.hp;
+  $("#bag").innerHTML="🎒"+(r.bag.length?r.bag.map(it=>`<span class="bg r${it.r}">${SL[it.s].i}</span>`).join(""):" 空");
+  $("#pots").innerHTML=PT.map((p,i)=>`<button data-a="pot" data-i="${i}" ${S.pot[i]&&r.hp<t.hp?"":"disabled"}>${p[0]} ×${S.pot[i]}</button>`).join("")}
+function tick(){const r=RUN;if(!r||r.st!="fight"||$("#train").hidden)return;const mo=r.mon;
+  if(mo.odd){mo.t+=50;$("#bg").style.width=100-mo.t/mo.lim*100+"%";if(mo.t>=mo.lim){log("🌫️ 謎の影は消えてしまった…");spawn()}return}
+  r.g+=50;
+  if(r.g>=mo.iv){r.g=0;const d=Math.max(1,Math.round(mo.atk*50/(50+tot().def)));r.hp-=d;log(`💢 ${mo.nm}の攻撃！ ${d} ダメージ`);an("#pl","hit");bar();if(r.hp<=0)return lose()}
+  $("#bg").style.width=r.g/mo.iv*100+"%"}
+function done(w){const r=RUN;if(!r||r.st!="fight")return;const mo=r.mon;
+  if(mo.odd){mo.hits--;log("✨ 効いている…！");an("#bo","hit");bar();if(mo.hits<=0)oddWin();return}
+  const d=Math.round(tot().atk*(1+w.length/10)*(1+Math.min(combo,100)*.005));mo.hp-=d;log("⚔️ "+d.toLocaleString()+" ダメージ！");an("#bo","hit");bar();if(mo.hp<=0)kill()}
+function kill(){const r=RUN,mo=r.mon,m=MD[r.mode],g=Math.round(8*1.07**(r.fl-1)*m.g*(mo.boss?6:1));const dm=dx()[mo.boss?"b":"m"];dm[r.fl-1]=(dm[r.fl-1]||0)+1;S.gold+=g;let t="💰 +"+g.toLocaleString()+"G";
+  for(let j=0;j<(mo.boss?2:1);j++){let k=roll(m.t);if(k==4&&mo.boss)k=0;if(k<4){const it=mk(rnd(SK),k);r.bag.push(it);t+=` ／ ${SL[it.s].i}${nm(it)}（${R[k].n}）`}}
+  if(!mo.boss&&Math.random()<.12){S.pot[0]++;t+=" ／ 🧪"}
+  log("💥 "+mo.nm+"を倒した！ "+t);save();hd();if(mo.boss)return cp();r.n++;spawn()}
+function oddWin(){const r=RUN,fs=!S.nm;S.nm=1;dx().odd=(dx().odd||0)+1;const W_=SL.weapon,it=mk("weapon",roll(MD[3].t),W_.nv+(Math.random()*(W_.V.length-W_.nv)|0));r.bag.push(it);log(`🌑 謎の影を倒した！${fs?"ナイトメアモード解放！":"様子が変な武器を落とした！"} ／ ${SL[it.s].i}${nm(it)}（${R[it.r].n}）`);save();rst();spawn()}
+function cp(){const r=RUN,L=r.bag;const fl=r.fl,m0=Math.max(...S.cl);if(fl>S.cl[r.mode]){S.cl[r.mode]=fl;SEL[r.mode]=0}const up=Math.max(...S.cl)>m0;S.inv.push(...L);r.bag=[];r.st="cp";r.hp=tot().hp;save();hd();
+  $("#cp").innerHTML=`<h3>🚩 第${fl}階層クリア！</h3>${fl>=100?"<p>🏆 全100階層を制覇した！あなたは伝説の勇者だ！</p>":""}<p>戦利品を持ち帰った！ HP全回復${up?" ＆ 最大HP +20":""}</p>${L.length?L.map(it=>card(it)).join(""):"<p class='mut'>この区間のドロップ品はなかった。</p>"}<div class="seg" style="justify-content:center">${fl>=100?"":`<button class="on" data-a="next">第${fl+1}階層へ進む</button>`}<button data-a="home">帰還する</button></div>`;show("cp")}
+function lose(){const n=RUN.bag.length;clearInterval(tm);RUN=0;
+  $("#cp").innerHTML=`<h3>💀 力尽きた…</h3><p>チェックポイント前の戦利品 ${n} 個を失った。回復薬や強化で備えて再挑戦しよう！</p><button class="on" data-a="home">戻る</button>`;show("cp")}
+
+function card(it,btn){const s=stat(it),st=["ATK","DEF","HP"].map((k,i)=>s[i]?k+" "+s[i]:"").filter(Boolean).join(" ／ ");
+  return `<div class="it r${it.r}"><div class="ic${od(it)?" odd":""}">${SL[it.s].i}</div><div class="in"><b>${nm(it)}</b> <span class="tg">${R[it.r].n}</span>${od(it)?" <span class='tg'>様子が変</span>":""}<br><small>${SL[it.s].l} Lv${it.lv} ・ ${st}</small></div>${btn||""}</div>`}
+function btns(it){const e=S.eq[it.s]===it.id,c=upCost(it),mx=it.lv>=20;
+  return `<div class="bt">${e?"<em>装備中</em>":`<button data-a="eq" data-id="${it.id}">装備</button>`}<button data-a="up" data-id="${it.id}" ${mx||S.gold<c?"disabled":""}>${mx?"MAX":"強化 "+c.toLocaleString()+"G"}</button>${e?"":`<button data-a="sell" data-id="${it.id}">売却 ${sellV(it).toLocaleString()}G</button>`}</div>`}
+function rgear(){const e=it=>S.eq[it.s]===it.id;$("#gl2").innerHTML=[...S.inv].sort((a,b)=>e(b)-e(a)||b.r-a.r||b.lv-a.lv).map(it=>card(it,btns(it))).join("")}
+function rshop(){const c=gCost();
+  $("#pl2").innerHTML=PT.map((p,i)=>`<div class="it"><div class="ic">${p[0]}</div><div class="in"><b>${p[1]}</b><br><small>最大HPの${Math.round(p[2]*100)}%回復 ・ 所持 ${S.pot[i]}</small></div><button data-a="buy" data-i="${i}" ${S.gold<pc(i)?"disabled":""}>${pc(i).toLocaleString()}G</button></div>`).join("");
+  $("#g1").textContent=`1回 ${c.toLocaleString()}G`;$("#g1").disabled=S.gold<c;
+  $("#g10").textContent=`10連 ${(c*9).toLocaleString()}G（レア以上1つ確定）`;$("#g10").disabled=S.gold<c*9}
+function tab(n){$$("section").forEach(s=>s.hidden=s.id!==n);$$("nav button").forEach(b=>b.classList.toggle("on",b.dataset.t===n));
+  if(n=="gear")rgear();if(n=="shop")rshop();if(n=="dex")rdex();if(n=="train"){if(RUN)tr.focus();else{rst();show("st")}}}
+let DV=0,RC=0;const RM=()=>S.rv?1.5*S.rv:1,rvCost=()=>5000*(S.rv+1);
+function rrv(){const c=rvCost();
+  $("#rv").innerHTML=`<b>🔄 リバース（強くてニューゲーム）</b><br><small>現在 ${S.rv}回 ／ ATK・最大HP ×${+RM().toFixed(2)}</small><br>✅ リバースのたびにATKと最大HPが1.5倍ずつ増えます（次回は ×${1.5*(S.rv+1)}）<br>⚠️ コイン・回復薬・装備（装備中も）・踏破した階層（全難易度）がすべて消えます。図鑑・ナイトメア解放は残ります。<br>必要コイン：<b>${c.toLocaleString()}G</b>（所持 ${S.gold.toLocaleString()}G）<br>`+(RC?`<button class="on" data-a="rv2">⚠️ 本当にリバースする</button> <button data-a="rv0">やめる</button>`:`<button data-a="rv1" ${S.gold>=c?"":"disabled"}>リバースする</button>`)}
+function rdex(){const d=dx(),tg=SK.reduce((a,k)=>a+SL[k].V.reduce((s,V)=>s+(V.o?3:4),0),0);$$("[data-v]").forEach(b=>b.classList.toggle("on",+b.dataset.v===DV));
+  $("#dxs").textContent=`モンスター ${Object.keys(d.m).length}/100 ／ ボス ${Object.keys(d.b).length}/100 ／ 装備 ${Object.keys(d.g).length}/${tg}`;
+  $("#dxl").innerHTML=DV==0?`<div class="dg">`+FL.map((q,i)=>{const k=d.m[i],b=d.b[i];return k||b?`<div class="dc"><div class="e">${q[0]}</div><b>${i+1}. ${q[1]}</b><br><small>討伐 ${k||0}${b?` ／ 👑${b}`:""}</small></div>`:`<div class="dc no"><div class="e">${q[0]}</div><b>${i+1}. ？？？</b></div>`}).join("")+(d.odd?`<div class="dc"><div class="e">🫥</div><b>謎の影</b><br><small>討伐 ${d.odd}</small></div>`:"")+`</div>`:SK.map(k=>`<h3>${SL[k].i} ${SL[k].l}</h3><div class="dg">`+SL[k].V.flatMap((V,v)=>R.map((r,j)=>V.o&&!j?"":`<div class="dc${d.g[k+j+"_"+v]?"":" no"} r${j}"><div class="e">${SL[k].i}</div><b>${d.g[k+j+"_"+v]?V.n[j]:"？？？"}</b><br><span class="tg">${r.n}</span></div>`)).join("")+`</div>`).join("")}
+function rf(){hd();if(!$("#gear").hidden)rgear();if(!$("#shop").hidden)rshop()}
+
+document.onclick=e=>{
+  const t=e.target.closest("[data-t]");if(t)return tab(t.dataset.t);
+  const v=e.target.closest("[data-v]");if(v){DV=+v.dataset.v;return rdex()}
+  const d=e.target.closest("[data-m]");if(d){MODE=+d.dataset.m;return rst()}
+  const b=e.target.closest("[data-a]");if(!b)return;
+  const a=b.dataset.a,id=+b.dataset.id,i=+b.dataset.i,it=S.inv.find(x=>x.id===id);
+  if(a=="rv1"){RC=1;return rrv()}
+  if(a=="rv0"){RC=0;return rrv()}
+  if(a=="rv2"){if(S.gold>=rvCost()){S.gold=0;S.pot=[0,0,0];S.inv=[];S.eq={};S.cl=[0,0,0,0];SEL=[0,0,0,0];S.rv++}RC=0;save();hd();return rst()}
+  if(a=="go")return go();
+  if(a=="fm"||a=="fx"){const mx=Math.min(S.cl[MODE]+1,100),f=FLR(MODE);SEL[MODE]=Math.max(1,Math.min(mx,f+(a=="fx"?1:-1)));return rst()}
+  if(a=="next"){RUN.n=0;RUN.fl++;show("rn");spawn();return tr.focus()}
+  if(a=="home"){clearInterval(tm);RUN=0;rst();return show("st")}
+  if(a=="pot"){const r=RUN,t=tot();if(r&&S.pot[i]>0&&r.hp<t.hp){S.pot[i]--;const h=Math.min(t.hp-r.hp,Math.ceil(t.hp*PT[i][2]));r.hp+=h;log(`${PT[i][0]} HPが ${h} 回復した`);save();bar()}return tr.focus()}
+  if(a=="eq")S.eq[it.s]=id;
+  else if(a=="up"){const c=upCost(it);if(S.gold>=c&&it.lv<20){S.gold-=c;it.lv++}}
+  else if(a=="sell"){S.gold+=sellV(it);S.inv=S.inv.filter(x=>x!==it)}
+  else if(a=="sellc"){const keep=Object.values(S.eq),L=S.inv.filter(x=>x.r==0&&!keep.includes(x.id));L.forEach(x=>S.gold+=sellV(x));S.inv=S.inv.filter(x=>!L.includes(x))}
+  else if(a=="buy"){if(S.gold>=pc(i)){S.gold-=pc(i);S.pot[i]++}}
+  else if(a=="pull"){const n=+b.dataset.n,c=n==10?gCost()*9:gCost();
+    if(S.gold>=c){S.gold-=c;const L=[];for(let j=0;j<n;j++){let k=roll(GT);if(n==10&&j==9&&!L.some(y=>y.r>0)&&k==0)k=1;const x=mk(rnd(SK),k);S.inv.push(x);L.push(x)}
+    $("#gr").innerHTML=L.sort((p,q)=>q.r-p.r).map(x=>card(x)).join("")}}
+  save();rf()};
+$("#fsl").oninput=()=>{SEL[MODE]=+$("#fsl").value;rst()};(()=>{let rc=0;$("#rs").onclick=()=>{if(!rc){rc=1;$("#rs").textContent="本当に削除しますか？もう一度押すと削除します";setTimeout(()=>{rc=0;$("#rs").textContent="セーブデータを削除する"},4000)}else{try{localStorage.removeItem("typeQuest1")}catch(e){}location.reload()}}})();hd();tab("train");
+</script></body></html>
