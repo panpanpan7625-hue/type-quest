@@ -212,7 +212,7 @@ const rab=()=>$("#ab").innerHTML=`<button data-a="tb" class="${S.bgm?"on":""}">�
 function typer(root,pick,done,miss,chr){
   let w,pl=0,inp=root.querySelector("input"),dp=root.querySelector(".w");
   const draw=v=>{dp.className="w"+(w.length>18?" s":"");dp.innerHTML=[...w].map((c,i)=>`<span class="${i<v.length?"ok":""}">${c}</span>`).join("")};
-  const next=()=>{const p=pick();w=p[0];CUR=p;say(p);root.querySelector(".m").textContent=p[1];inp.value="";pl=0;draw("");speak(w)};
+  const next=()=>{const p=pick();w=p[0];CUR=p;root.querySelector(".m").textContent=p[1];inp.value="";pl=0;draw("");speak(w)};
   inp.oninput=()=>{ksnd();const v=inp.value;let k=0;while(k<v.length&&v[k].toLowerCase()===(w[k]||"").toLowerCase())k++;
     if(k<v.length){root.classList.add("err");setTimeout(()=>root.classList.remove("err"),150);miss()}
     const s=v.slice(0,k);inp.value=s;draw(s);if(k>pl)chr(k-pl);pl=k;if(s.length==w.length){done(w);next()}};
@@ -287,13 +287,9 @@ function rshop(){const c=gCost();
   $("#g10").textContent=`10連 ${(c*9).toLocaleString()}G（レア以上1つ確定）`;$("#g10").disabled=S.gold<c*9}
 function tab(n){stopA();$$("section").forEach(s=>s.hidden=s.id!==n);$$("nav button").forEach(b=>b.classList.toggle("on",b.dataset.t===n));
   if(n=="gear")rgear();if(n=="shop")rshop();if(n=="dex")rdex();if(n=="train"){if(RUN)tr.focus();else{rst();show("st")}}}
-let CUR=0,AU=0,SEQ=0,VST=0,VMS="";const AC={},VU="http://127.0.0.1:50021",SPK=2;
-function stopA(){if(AU){AU.pause();AU=0}try{speechSynthesis.cancel()}catch(e){}}
-async function vv(t){const q=await fetch(`${VU}/audio_query?speaker=${SPK}&text=${encodeURIComponent(t)}`,{method:"POST"});if(!q.ok)throw 1;
-  const s=await fetch(`${VU}/synthesis?speaker=${SPK}`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(await q.json())});if(!s.ok)throw 1;return URL.createObjectURL(await s.blob())}
-async function say(p,f){if(!p||(!S.snd&&!f))return;const id=++SEQ,t=p[2]||p[0];stopA();
-  if(VST>=0){try{const u=await(AC[t]=AC[t]||vv(t));if(id!=SEQ)return;if(VST!=1){VST=1;VMS="🔊 VOICEVOX 四国めたんの声で発音中";rsn()}AU=new Audio(u);AU.play().catch(()=>{});return}catch(e){delete AC[t];if(id!=SEQ)return;VST=-1;VMS="⚠️ VOICEVOXに接続できないため、ブラウザの英語音声で発音しています。";rsn()}}
-  try{const u=new SpeechSynthesisUtterance(p[0]||t);u.lang="en-US";u.rate=.9;speechSynthesis.speak(u)}catch(e){}}
+let CUR=0;
+function stopA(){try{speechSynthesis.cancel()}catch(e){}}
+function say(p,f){if(p)speak(p[0],f)}
 function rsn(){$("#sn").innerHTML=`<b>🔊 発音</b>：<button data-a="snd" class="${S.snd?"on":""}">${S.snd?"ON":"OFF"}</button>`}
 let DV=0,RC=0;const RM=()=>S.rv?1.5*S.rv:1,rvCost=()=>5000*(S.rv+1);
 function rrv(){const c=rvCost();
@@ -310,14 +306,13 @@ document.onclick=e=>{
   const d=e.target.closest("[data-m]");if(d){MODE=+d.dataset.m;return rst()}
   const b=e.target.closest("[data-a]");if(!b)return;
   const a=b.dataset.a,id=+b.dataset.id,i=+b.dataset.i,it=S.inv.find(x=>x.id===id);
-  if(a=="snd"){S.snd=S.snd?0:1;if(!S.snd)stopA();save();return rsn()}
+  if(a=="snd"){S.snd=S.snd?0:1;if(!S.snd)stopA();save();rsn();sl();return RUN?tr.focus():0}
   if(a=="rp"){say(CUR,1);return tr.focus()}
   
   if(a=="rv1"){RC=1;return rrv()}
   if(a=="rv0"){RC=0;return rrv()}
   if(a=="rv2"){if(S.gold>=rvCost()){S.gold=0;S.pot=[0,0,0];S.inv=[];S.eq={};S.cl=[0,0,0,0];SEL=[0,0,0,0];S.rv++}RC=0;save();hd();return rst()}
   if(a=="spk"){tr.say();return tr.focus()}
-  if(a=="snd"){S.snd=S.snd?0:1;save();sl();return tr.focus()}
   if(a=="tb"){S.bgm=S.bgm?0:1;save();rab();aini();bgmOn();return RUN?tr.focus():0}
   if(a=="tk"){S.kse=S.kse?0:1;save();rab();return RUN?tr.focus():0}
   if(a=="go")return go();
