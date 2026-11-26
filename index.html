@@ -61,6 +61,7 @@ em{color:var(--hp);font-style:normal;font-weight:700;text-align:center}
 <div style="margin:8px 0"><div class="row"><button data-a="fm" aria-label="前の階層">◀</button><b id="fn"></b><button data-a="fx" aria-label="次の階層">▶</button></div><input type="range" id="fsl" aria-label="階層" min="1" max="1" value="1" style="width:100%"></div>
 <div class="tb" id="dt" style="text-align:left;margin:8px 0"></div>
 <div id="pi" class="mut" style="margin:6px 0;font-size:.9rem"></div>
+<div class="tb" id="sn" style="text-align:left;margin:8px 0"></div>
 <button class="on" data-a="go" style="font-size:1.2rem;width:100%;padding:.8rem">🚀 出発！</button>
 <div class="tb" id="rv" style="text-align:left;margin-top:14px"></div>
 </div>
@@ -73,8 +74,9 @@ em{color:var(--hp);font-style:normal;font-weight:700;text-align:center}
 <div class="bar" id="pl"><i id="ph"></i></div>
 <div class="tb" id="t1"><div class="w"></div><div class="m"></div><input autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="ここに入力"></div>
 <div class="seg" id="pots"></div>
+<div class="seg"><button data-a="spk">🔊 発音をもう一度</button><button data-a="snd" id="snd"></button></div>
 <div class="lg" id="lg"></div>
-<button data-a="home">撤退（未確保の戦利品を失う）</button>
+<button data-a="rp">🔈 もう一度</button> <button data-a="home">撤退（未確保の戦利品を失う）</button>
 </div>
 <div id="cp" hidden></div>
 </section>
@@ -140,6 +142,27 @@ Scientists around the world are working together to solve the most difficult pro
 Despite the heavy rain, the festival continued and the crowd cheered louder than ever.|大雨にもかかわらず祭りは続き、観衆はかつてないほど大きく歓声を上げた。
 The dragon slept beneath the mountain, guarding a treasure that no hero could carry away.|竜は山の下で眠り、どんな英雄も持ち去れない宝を守っていた。
 Whenever I feel discouraged, I remember how far I have come since the very beginning.|落ち込んだときは、最初からどれほど進歩したかを思い出す。`);
+const KN={};"cat=キャット,dog=ドッグ,sun=サン,moon=ムーン,tree=ツリー,book=ブック,fish=フィッシュ,bird=バード,rain=レイン,wind=ウィンド,fire=ファイア,water=ウォーター,star=スター,milk=ミルク,rice=ライス,desk=デスク,door=ドア,road=ロード,song=ソング,blue=ブルー,red=レッド,apple=アップル,green=グリーン,happy=ハッピー,sweet=スウィート,bread=ブレッド,hand=ハンド,face=フェイス,snow=スノウ,cloud=クラウド,river=リバー,sea=スィー,city=シティ,king=キング,girl=ガール,boy=ボーイ,home=ホーム,food=フード,cake=ケイク,ball=ボール,cold=コールド,hot=ホット,big=ビッグ,small=スモール,fast=ファスト,slow=スロウ,nose=ノーズ,hair=ヘア,love=ラブ,play=プレイ,walk=ウォーク,jump=ジャンプ,sing=シング,read=リード,write=ライト,pen=ペン,box=ボックス,bag=バッグ,cup=カップ,hat=ハット,egg=エッグ,bed=ベッド,car=カー,bus=バス,map=マップ,key=キー,sky=スカイ,sand=サンド,rock=ロック,leaf=リーフ,lake=レイク,farm=ファーム,duck=ダック,frog=フロッグ,bear=ベア,lion=ライオン,wolf=ウルフ,goat=ゴート,sheep=シープ,horse=ホース,pig=ピッグ,cow=カウ,nest=ネスト,wing=ウィング,tail=テイル,eye=アイ,ear=イア,mouth=マウス,arm=アーム,leg=レッグ,head=ヘッド,tea=ティー,soup=スープ,meat=ミート,salt=ソルト,sugar=シュガー,lemon=レモン,peach=ピーチ,grape=グレイプ,pizza=ピッツァ,candy=キャンディ,sit=シット,run=ラン,eat=イート,drink=ドリンク,sleep=スリープ,swim=スウィム,dance=ダンス,laugh=ラフ,cry=クライ,open=オープン,kind=カインド,new=ニュー,old=オールド,long=ロング,short=ショート,dark=ダーク,warm=ウォーム,cool=クール,soft=ソフト,gold=ゴールド,ring=リング,gift=ギフト,gate=ゲイト,wall=ウォール,roof=ルーフ,tent=テント,boat=ボート,ship=シップ,train=トレイン,school=スクール,friend=フレンド,window=ウィンドウ,flower=フラワー,mountain=マウンテン,morning=モーニング,kitchen=キッチン,summer=サマー,winter=ウィンター,family=ファミリー,teacher=ティーチャー,music=ミュージック,travel=トラベル,garden=ガーデン,bridge=ブリッジ,market=マーケット,pencil=ペンスル,island=アイランド,orange=オレンジ,yellow=イエロー,monkey=モンキー,rabbit=ラビット,doctor=ドクター,farmer=ファーマー,picture=ピクチャー,number=ナンバー,answer=アンサー,button=バトン,jacket=ジャケット,castle=キャッスル,forest=フォレスト,planet=プラネット,silver=シルバー,golden=ゴールデン,energy=エナジー,machine=マシーン,bottle=ボトル,breakfast=ブレックファスト,holiday=ホリデイ,library=ライブラリー,station=ステイション,airport=エアポート,science=サイエンス,history=ヒストリー,weather=ウェザー,problem=プロブレム,brother=ブラザー,sister=シスター,mother=マザー,father=ファーザー,child=チャイルド,people=ピープル,animal=アニマル,weekend=ウィークエンド,evening=イーブニング,afternoon=アフタヌーン,season=スィーズン,spring=スプリング,autumn=オータム,birthday=バースデイ,vacation=ベケイション,journey=ジャーニー,country=カントリー,village=ビレッジ,street=ストリート,building=ビルディング,balcony=バルコニー,ceiling=スィーリング,curtain=カーテン,blanket=ブランケット,pillow=ピロー,mirror=ミラー,basket=バスケット,ticket=ティケット,camera=キャメラ,guitar=ギター,violin=ヴァイオリン,piano=ピアノ,singer=スィンガー,painter=ペインター,writer=ライター,soldier=ソルジャー,knight=ナイト,dragon=ドラゴン,wizard=ウィザード,princess=プリンセス,treasure=トレジャー,thunder=サンダー,rainbow=レインボウ,volcano=ヴォルケイノウ,desert=デザート,ocean=オーシャン,jungle=ジャングル,harbor=ハーバー,tunnel=タネル,engine=エンジン,rocket=ロケット,kitten=キトゥン,puppy=パピー,turtle=タートル,dolphin=ドルフィン,penguin=ペンギン,giraffe=ジラフ,elephant=エレファント,chicken=チキン,cookie=クッキー,chocolate=チョコレット,sandwich=サンドウィッチ,noodle=ヌードル,tomato=トメイトウ,potato=ポテイトウ,cabbage=キャベッジ,banana=バナナ,strong=ストロング,quiet=クワイエット,simple=スィンプル,famous=フェイマス,popular=ポピュラー,special=スペシャル,careful=ケアフル,clever=クレバー,honest=オネスト,gentle=ジェントル,listen=リスン,borrow=ボロウ,repeat=リピート,choose=チューズ,decide=ディサイド,explain=イクスプレイン,believe=ビリーヴ,forget=フォゲット,wonder=ワンダー,collect=コレクト,practice=プラクティス,beautiful=ビューティフル,adventure=アドベンチャー,important=インポータント,dangerous=デインジャラス,knowledge=ナレッジ,language=ラングウィッジ,remember=リメンバー,tomorrow=トゥモロウ,yesterday=イエスタデイ,wonderful=ワンダフル,difficult=ディフィカルト,celebrate=セレブレイト,hospital=ホスピタル,umbrella=アンブレラ,vegetable=ベジタブル,restaurant=レストラント,discover=ディスカバー,favorite=フェイバリット,direction=ディレクション,tradition=トラディション,challenge=チャレンジ,experience=イクスピアリエンス,government=ガバメント,environment=インヴァイロンメント,technology=テクノロジー,imagination=イマジネイション,education=エデュケイション,community=コミュニティ,information=インフォメイション,independent=インディペンデント,opportunity=オポチュニティ,tournament=トーナメント,temperature=テンパラチャー,communicate=コミュニケイト,responsible=リスポンシブル,comfortable=カムフタブル,necessary=ネセサリー,successful=サクセスフル,electricity=エレクトリシティ,achievement=アチーブメント,accomplish=アカンプリッシュ,appreciate=アプリーシエイト,atmosphere=アトモスフィア,authority=オーソリティ,available=アヴェイラブル,boundary=バウンダリー,celebrity=セレブリティ,character=キャラクター,chemistry=ケミストリー,competition=コンペティション,concentrate=コンセントレイト,confidence=コンフィデンス,conversation=カンヴァセイション,curiosity=キュアリオシティ,democracy=ディマクラシー,destination=デスティネイション,development=ディヴェロップメント,discussion=ディスカッション,disappear=ディサピア,emergency=イマージェンシー,enormous=イノーマス,equipment=イクイップメント,exception=イクセプション,excellent=エクセレント,exhibition=エグジビション,expression=イクスプレッション,fantastic=ファンタスティック,generation=ジェネレイション,geography=ジオグラフィー,imaginary=イマジナリー,immediately=イミーディエットリー,incredible=インクレディブル,influence=インフルエンス,ingredient=イングリーディエント,intelligent=インテリジェント,interesting=インタレスティング,invitation=インヴィテイション,laboratory=ラボラトリー,literature=リタラチャー,magnificent=マグニフィセント,mysterious=ミスティアリアス,neighborhood=ネイバーフッド,opposite=アポジット,particular=パティキュラー,performance=パフォーマンス,philosophy=フィロソフィー,population=ポピュレイション,possibility=ポシビリティ,preparation=プレパレイション,protection=プロテクション,reputation=レピュテイション,revolution=レヴォルーション,satisfaction=サティスファクション,scientific=サイエンティフィック,signature=シグナチャー,situation=シチュエイション,specialist=スペシャリスト,strategy=ストラテジー,structure=ストラクチャー,suggestion=サジェスチョン,supermarket=スーパーマーケット,thoughtful=ソートフル,transportation=トランスポーテイション,university=ユニヴァーシティ,vocabulary=ヴォキャビュラリー,volunteer=ヴァランティア,wilderness=ウィルダネス,extraordinary=イクストローディネリー,unbelievable=アンビリーヴァブル".split(",").forEach(x=>{const k=x.split("=");KN[k[0]]=k[1]});
+const K1=`アイ ライク キャッツ
+ディス イズ マイ ブック
+シー プレイズ ザ ピアノ
+ウィー イート ランチ アット ヌーン
+ヒー ランズ エブリ モーニング
+イット イズ ア サニー デイ
+プリーズ オープン ザ ドア
+マイ ファーザー ドライブズ ア カー
+ザ ドッグ イズ アンダー ザ テーブル
+アイ ゴー トゥー スクール バイ バス
+ホワット タイム イズ イット ナウ
+サンキュー ベリー マッチ`.split("\n"),K2=`ラーニング ア ニュー ラングウィッジ オープンズ ドアーズ トゥー カルチャーズ ザット ユー ハブ ネバー イマジンド ビフォー
+オルゾウ ザ ジャーニー ワズ ロング アンド イグゾースティング ゼイ ファイナリー リーチト ザ サミット アット サンライズ
+イフ ユー プラクティス エブリ デイ ユア タイピング スピード ウィル インプルーブ ファスター ザン ユー イクスペクト
+ジ エインシェント ライブラリー コンテインド サウザンズ オブ マニュスクリプツ ザット ノーバディ ハド レッド フォー センチュリーズ
+サイエンティスツ アラウンド ザ ワールド アー ワーキング トゥゲザー トゥー ソルブ ザ モースト ディフィカルト プロブレムズ オブ アワー タイム
+ディスパイト ザ ヘビー レイン ザ フェスティバル コンティニュード アンド ザ クラウド チアード ラウダー ザン エバー
+ザ ドラゴン スレプト ビニース ザ マウンテン ガーディング ア トレジャー ザット ノー ヒーロー クッド キャリー アウェイ
+ウェネバー アイ フィール ディスカレッジド アイ リメンバー ハウ ファー アイ ハブ カム シンス ザ ベリー ビギニング`.split("\n");
+W.forEach(L=>L.forEach(p=>p[2]=KN[p[0]]));S1.forEach((p,i)=>p[2]=K1[i]);S2.forEach((p,i)=>p[2]=K2[i]);
 const MD=[
 {n:"イージー",d:"やさしい単語",h:.8,a:.8,g:1,iv:5500,t:[30,5,0,0,65]},
 {n:"ふつう",d:"ふつうの単語",h:1,a:1,g:1.3,iv:4500,t:[50,10,5,0,35]},
@@ -155,7 +178,7 @@ let S=null;try{S=JSON.parse(localStorage.getItem("typeQuest1"))}catch(e){}
 const dx=()=>S.dx||(S.dx={m:{},b:{},g:{}});
 const mk=(s,r,v=Math.random()*SL[s].nv|0)=>{dx().g[s+r+"_"+v]=1;return{id:S.id++,s,r,v,lv:0}};
 if(!S||!S.inv){S={gold:0,inv:[],eq:{},id:1,clear:0};const a=mk("weapon",0,0),b=mk("armor",0,0);S.inv.push(a,b);S.eq.weapon=a.id;S.eq.armor=b.id}
-S.pot=S.pot||[3,0,0];S.nm=S.nm||0;S.rv=S.rv||0;S.eb=S.eb||[0,0,0,0];S.cl=S.cl||[S.clear||0,0,0,0];Object.keys(dx().g).forEach(k=>{if(!k.includes("_")){dx().g[k+"_0"]=1;delete dx().g[k]}});S.inv.forEach(it=>dx().g[it.s+it.r+"_"+(it.v||0)]=1);
+S.pot=S.pot||[3,0,0];S.nm=S.nm||0;S.rv=S.rv||0;S.eb=S.eb||[0,0,0,0];if(S.snd==null)S.snd=1;if(S.snd===undefined)S.snd=1;S.cl=S.cl||[S.clear||0,0,0,0];Object.keys(dx().g).forEach(k=>{if(!k.includes("_")){dx().g[k+"_0"]=1;delete dx().g[k]}});S.inv.forEach(it=>dx().g[it.s+it.r+"_"+(it.v||0)]=1);
 const save=()=>{try{localStorage.setItem("typeQuest1",JSON.stringify(S))}catch(e){}};
 const stat=it=>{const f=R[it.r].m*(1+.35*it.lv);return SL[it.s].V[it.v||0].b.map(v=>Math.round(v*f))};
 const tot=()=>{let a=5,d=0,h=100+20*Math.max(...S.cl);for(const k of SK){const it=S.inv.find(x=>x.id===S.eq[k]);if(it){const s=stat(it);a+=s[0];d+=s[1];h+=s[2]}}return{atk:Math.round(a*RM()),def:d,hp:Math.round(h*RM())}};
@@ -167,15 +190,17 @@ const hd=()=>{const t=tot();$("#hd").innerHTML=`<span>💰 ${S.gold.toLocaleStri
 const nm=it=>SL[it.s].V[it.v||0].n[it.r],od=it=>(it.v||0)>=SL[it.s].nv;
 let combo=0;const cb=()=>$$(".cb").forEach(e=>e.textContent=combo>1?combo+" COMBO!":"");
 
+const sl=()=>$("#snd").textContent=S.snd?"🔊 自動発音：ON":"🔇 自動発音：OFF";
+function speak(t,f){if((!S.snd&&!f)||!window.speechSynthesis)return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t),vs=speechSynthesis.getVoices(),v=vs.find(x=>/^en[-_]US/i.test(x.lang))||vs.find(x=>/^en/i.test(x.lang));u.lang="en-US";if(v)u.voice=v;u.rate=.9;speechSynthesis.speak(u)}catch(e){}}
 function typer(root,pick,done,miss,chr){
   let w,pl=0,inp=root.querySelector("input"),dp=root.querySelector(".w");
   const draw=v=>{dp.className="w"+(w.length>18?" s":"");dp.innerHTML=[...w].map((c,i)=>`<span class="${i<v.length?"ok":""}">${c}</span>`).join("")};
-  const next=()=>{const p=pick();w=p[0];root.querySelector(".m").textContent=p[1];inp.value="";pl=0;draw("")};
+  const next=()=>{const p=pick();w=p[0];CUR=p;say(p);root.querySelector(".m").textContent=p[1];inp.value="";pl=0;draw("");speak(w)};
   inp.oninput=()=>{const v=inp.value;let k=0;while(k<v.length&&v[k].toLowerCase()===(w[k]||"").toLowerCase())k++;
     if(k<v.length){root.classList.add("err");setTimeout(()=>root.classList.remove("err"),150);miss()}
     const s=v.slice(0,k);inp.value=s;draw(s);if(k>pl)chr(k-pl);pl=k;if(s.length==w.length){done(w);next()}};
   root.onclick=()=>inp.focus();
-  return{next,focus:()=>inp.focus()}
+  return{next,focus:()=>inp.focus(),say:()=>speak(w,1)}
 }
 
 let RUN=0,tm=0,MODE=0,SEL=[0,0,0,0],PM=0;const FMX=m=>PM==1?S.cl[m]:Math.min(S.cl[m]+1,100),FLR=m=>{const x=FMX(m);return Math.max(1,SEL[m]&&SEL[m]<=x?SEL[m]:x)};
@@ -188,7 +213,7 @@ const pick=()=>{const r=RUN,mo=r&&r.mon,x=Math.random(),b=mo&&mo.boss,m=r?r.mode
   return rnd(W[m+(b?1:0)])};
 const tr=typer($("#t1"),pick,done,()=>{combo=0;cb()},n=>{combo+=n;cb()});
 
-function rst(){rrv();const m=MD[MODE],mx=FMX(MODE),f=FLR(MODE);
+function rst(){rrv();rsn();const m=MD[MODE],mx=FMX(MODE),f=FLR(MODE);
   $("#md").innerHTML=MD.map((x,i)=>`<button data-m="${i}" class="${i==MODE?"on":""}" ${i==3&&!S.nm?"disabled":""}>${i==3&&!S.nm?"🔒 ":""}${x.n}</button>`).join("");
   $("#pm").innerHTML=["通常","👑 ボスラッシュ","🔁 エンドレス"].map((x,i)=>`<button data-p="${i}" class="${i==PM?"on":""}">${x}</button>`).join("");
   $("#fsl").max=Math.max(1,mx);$("#fsl").value=f;$("#fsl").disabled=PM==2||(PM==1&&mx<1);$("[data-a=go]").disabled=PM==1&&mx<1;
@@ -243,8 +268,16 @@ function rshop(){const c=gCost();
   $("#pl2").innerHTML=PT.map((p,i)=>`<div class="it"><div class="ic">${p[0]}</div><div class="in"><b>${p[1]}</b><br><small>最大HPの${Math.round(p[2]*100)}%回復 ・ 所持 ${S.pot[i]}</small></div><button data-a="buy" data-i="${i}" ${S.gold<pc(i)?"disabled":""}>${pc(i).toLocaleString()}G</button></div>`).join("");
   $("#g1").textContent=`1回 ${c.toLocaleString()}G`;$("#g1").disabled=S.gold<c;
   $("#g10").textContent=`10連 ${(c*9).toLocaleString()}G（レア以上1つ確定）`;$("#g10").disabled=S.gold<c*9}
-function tab(n){$$("section").forEach(s=>s.hidden=s.id!==n);$$("nav button").forEach(b=>b.classList.toggle("on",b.dataset.t===n));
+function tab(n){stopA();$$("section").forEach(s=>s.hidden=s.id!==n);$$("nav button").forEach(b=>b.classList.toggle("on",b.dataset.t===n));
   if(n=="gear")rgear();if(n=="shop")rshop();if(n=="dex")rdex();if(n=="train"){if(RUN)tr.focus();else{rst();show("st")}}}
+let CUR=0,AU=0,SEQ=0,VST=0,VMS="";const AC={},VU="http://127.0.0.1:50021",SPK=2;
+function stopA(){if(AU){AU.pause();AU=0}try{speechSynthesis.cancel()}catch(e){}}
+async function vv(t){const q=await fetch(`${VU}/audio_query?speaker=${SPK}&text=${encodeURIComponent(t)}`,{method:"POST"});if(!q.ok)throw 1;
+  const s=await fetch(`${VU}/synthesis?speaker=${SPK}`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(await q.json())});if(!s.ok)throw 1;return URL.createObjectURL(await s.blob())}
+async function say(p,f){if(!p||(!S.snd&&!f))return;const id=++SEQ,t=p[2]||p[0];stopA();
+  if(VST>=0){try{const u=await(AC[t]=AC[t]||vv(t));if(id!=SEQ)return;if(VST!=1){VST=1;VMS="🔊 VOICEVOX 四国めたんの声で発音中";rsn()}AU=new Audio(u);AU.play().catch(()=>{});return}catch(e){delete AC[t];if(id!=SEQ)return;VST=-1;VMS="⚠️ VOICEVOXに接続できないため、ブラウザの英語音声で発音しています。";rsn()}}
+  try{const u=new SpeechSynthesisUtterance(p[0]||t);u.lang="en-US";u.rate=.9;speechSynthesis.speak(u)}catch(e){}}
+function rsn(){$("#sn").innerHTML=`<b>🔊 発音</b>：<button data-a="snd" class="${S.snd?"on":""}">${S.snd?"ON":"OFF"}</button>`}
 let DV=0,RC=0;const RM=()=>S.rv?1.5*S.rv:1,rvCost=()=>5000*(S.rv+1);
 function rrv(){const c=rvCost();
   $("#rv").innerHTML=`<b>🔄 リバース（強くてニューゲーム）</b><br><small>現在 ${S.rv}回 ／ ATK・最大HP ×${+RM().toFixed(2)}</small><br>✅ リバースのたびにATKと最大HPが1.5倍ずつ増えます（次回は ×${1.5*(S.rv+1)}）<br>⚠️ コイン・回復薬・装備（装備中も）・踏破した階層（全難易度）がすべて消えます。図鑑・ナイトメア解放は残ります。<br>必要コイン：<b>${c.toLocaleString()}G</b>（所持 ${S.gold.toLocaleString()}G）<br>`+(RC?`<button class="on" data-a="rv2">⚠️ 本当にリバースする</button> <button data-a="rv0">やめる</button>`:`<button data-a="rv1" ${S.gold>=c?"":"disabled"}>リバースする</button>`)}
@@ -260,9 +293,14 @@ document.onclick=e=>{
   const d=e.target.closest("[data-m]");if(d){MODE=+d.dataset.m;return rst()}
   const b=e.target.closest("[data-a]");if(!b)return;
   const a=b.dataset.a,id=+b.dataset.id,i=+b.dataset.i,it=S.inv.find(x=>x.id===id);
+  if(a=="snd"){S.snd=S.snd?0:1;if(!S.snd)stopA();save();return rsn()}
+  if(a=="rp"){say(CUR,1);return tr.focus()}
+  
   if(a=="rv1"){RC=1;return rrv()}
   if(a=="rv0"){RC=0;return rrv()}
   if(a=="rv2"){if(S.gold>=rvCost()){S.gold=0;S.pot=[0,0,0];S.inv=[];S.eq={};S.cl=[0,0,0,0];SEL=[0,0,0,0];S.rv++}RC=0;save();hd();return rst()}
+  if(a=="spk"){tr.say();return tr.focus()}
+  if(a=="snd"){S.snd=S.snd?0:1;save();sl();return tr.focus()}
   if(a=="go")return go();
   if(a=="fm"||a=="fx"){const mx=Math.max(1,FMX(MODE)),f=FLR(MODE);SEL[MODE]=Math.max(1,Math.min(mx,f+(a=="fx"?1:-1)));return rst()}
   if(a=="next"){RUN.n=0;RUN.fl++;show("rn");spawn();return tr.focus()}
@@ -277,5 +315,5 @@ document.onclick=e=>{
     if(S.gold>=c){S.gold-=c;const L=[];for(let j=0;j<n;j++){let k=roll(GT);if(n==10&&j==9&&!L.some(y=>y.r>0)&&k==0)k=1;const x=mk(rnd(SK),k);S.inv.push(x);L.push(x)}
     $("#gr").innerHTML=L.sort((p,q)=>q.r-p.r).map(x=>card(x)).join("")}}
   save();rf()};
-$("#fsl").oninput=()=>{SEL[MODE]=+$("#fsl").value;rst()};(()=>{let rc=0;$("#rs").onclick=()=>{if(!rc){rc=1;$("#rs").textContent="本当に削除しますか？もう一度押すと削除します";setTimeout(()=>{rc=0;$("#rs").textContent="セーブデータを削除する"},4000)}else{try{localStorage.removeItem("typeQuest1")}catch(e){}location.reload()}}})();hd();tab("train");
+$("#fsl").oninput=()=>{SEL[MODE]=+$("#fsl").value;rst()};(()=>{let rc=0;$("#rs").onclick=()=>{if(!rc){rc=1;$("#rs").textContent="本当に削除しますか？もう一度押すと削除します";setTimeout(()=>{rc=0;$("#rs").textContent="セーブデータを削除する"},4000)}else{try{localStorage.removeItem("typeQuest1")}catch(e){}location.reload()}}})();hd();sl();tab("train");
 </script></body></html>
